@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080d17">
+<title>NEX CORE — Personal AI Operating System</title>
+<style>
+:root{--bg:#080d17;--panel:#101827;--panel2:#142033;--line:#23344d;--txt:#eef4ff;--muted:#9aabc4;--blue:#398bff;--cyan:#55d6ff;--green:#46d39a;--red:#ff7373}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,#142846 0,transparent 32%),var(--bg);color:var(--txt);font:15px Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer;border:1px solid var(--line);border-radius:10px;background:#17243a;color:var(--txt);padding:10px 13px}button.primary{background:linear-gradient(135deg,#2674e8,#1354b8);border-color:#398bff}button.danger{color:#ffaaaa}
+header{height:68px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:#080d17dd;position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}
+.brand{font-weight:850;letter-spacing:2px;font-size:19px}.brand span{color:var(--cyan)}.status{font-size:12px;color:var(--green);border:1px solid #285c50;border-radius:99px;padding:6px 10px}
+.layout{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 68px)}aside{border-right:1px solid var(--line);padding:20px 13px}.nav{display:flex;flex-direction:column;gap:7px}.nav button{text-align:left;background:transparent;border-color:transparent;color:var(--muted)}.nav button.active,.nav button:hover{background:#17243a;border-color:var(--line);color:var(--txt)}
+main{padding:28px;max-width:1400px;width:100%;margin:auto}.eyebrow{color:var(--cyan);font-size:11px;letter-spacing:2px;font-weight:800}.title{font-size:30px;font-weight:800;margin:6px 0}.sub{color:var(--muted);margin:0 0 24px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:linear-gradient(160deg,#121d2e,#0e1725);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}.card h3{margin:0 0 8px;font-size:14px;color:#c9d8ef}.metric{font-size:30px;font-weight:800}.muted{color:var(--muted);font-size:13px}.wide{grid-column:1/-1}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.stack{display:flex;flex-direction:column;gap:10px}
+input,textarea,select{width:100%;background:#091321;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:11px;outline:none}textarea{min-height:100px;resize:vertical}.field{display:flex;flex-direction:column;gap:6px;margin:10px 0}.field label{font-size:12px;color:var(--muted)}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.item{padding:12px;border:1px solid var(--line);border-radius:11px;background:#0b1422;margin-top:8px}.item strong{display:block}.item small{color:var(--muted)}.pill{font-size:11px;border-radius:99px;padding:4px 8px;background:#172b45;color:#9bc8ff}.empty{padding:22px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}
+.agent{display:flex;gap:12px;align-items:flex-start}.agent .ico{font-size:22px}.agent p{margin:5px 0;color:var(--muted);font-size:13px}
+footer{color:#71839e;font-size:11px;margin-top:26px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line);padding:8px;overflow:auto}.nav{flex-direction:row;width:max-content}.nav button{white-space:nowrap;padding:9px}main{padding:18px}.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){header{padding:0 14px}.grid,.two{grid-template-columns:1fr}.title{font-size:25px}.status{font-size:10px}}
+</style>
+</head>
+<body>
+<header><div class="brand">NEX <span>CORE</span></div><div class="status">● LOCAL MODE · PRIVATE</div></header>
+<div class="layout">
+<aside><nav class="nav" id="nav">
+<button class="active" data-page="home">⌂ Übersicht</button><button data-page="projects">▦ Projekte</button><button data-page="tasks">✓ Aufgaben</button><button data-page="agents">◈ Agenten</button><button data-page="brain">✧ Brain / Wissen</button><button data-page="automation">⟳ Automatisierung</button><button data-page="settings">⚙ Einstellungen</button>
+</nav></aside>
+<main id="app"></main>
+</div>
+<script>
+const KEY='nexcore_v1';
+const seed={
+ projects:[
+ {id:1,name:'NEXVOLT',area:'YouTube / Content',status:'Aktiv',notes:'Faceless Tech-Kanal: KI, Smartphones, PCs, Gaming und Gadgets.'},
+ {id:2,name:'NEXCAST',area:'Smart TV',status:'Aktiv',notes:'Leichtgewichtiges Fullscreen-TV-Dashboard für Windows-Laptop und Samsung-TV.'},
+ {id:3,name:'Hausrenovierung',area:'Haus / Interior',status:'Aktiv',notes:'Moderne Luxusrenovierung, funktionale Familienbereiche.'},
+ {id:4,name:'Familienfinanzen',area:'Finanzen',status:'Aktiv',notes:'Monatsbudget, Ausgaben, Rücklagen und Ziele.'}
+ ],
+ tasks:[{id:1,title:'NEX CORE Grundsystem einrichten',project:'NEX CORE',done:false,priority:'Hoch'},{id:2,title:'Projektziele und nächste Schritte für NEXVOLT festlegen',project:'NEXVOLT',done:false,priority:'Mittel'}],
+ knowledge:[{id:1,title:'NEX CORE Prinzip',body:'Kosten zuerst vermeiden. Persönliche Daten lokal speichern. KI-Entscheidungen vor externen Aktionen bestätigen.'}],
+ automations:[{id:1,name:'Täglicher Check-in',trigger:'Jeden Tag',action:'Offene Aufgaben prüfen, Prioritäten setzen und Tagesplan erstellen.',enabled:false},{id:2,name:'Wöchentlicher Projektcheck',trigger:'Jeden Sonntag',action:'Projektstatus, Blocker und nächste Schritte überprüfen.',enabled:false}],
+ notes:''
+};
+let db=load(); let page='home';
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||structuredClone(seed)}catch(e){return structuredClone(seed)}}
+function save(){localStorage.setItem(KEY,JSON.stringify(db));}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function setPage(p){page=p;document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===p));render()}
+document.getElementById('nav').addEventListener('click',e=>{let b=e.target.closest('button[data-page]');if(b)setPage(b.dataset.page)});
+function shell(kicker,title,sub,body){return `<div class="eyebrow">${kicker}</div><div class="title">${title}</div><p class="sub">${sub}</p>${body}`}
+function render(){
+ const app=document.getElementById('app');
+ if(page==='home'){
+ const open=db.tasks.filter(x=>!x.done).length, done=db.tasks.filter(x=>x.done).length;
+ app.innerHTML=shell('PERSONAL AI OPERATING SYSTEM','Dein Kontrollzentrum','Ein privater Arbeitsbereich für Projekte, Aufgaben, Wissen und KI-Workflows.',`
+ <div class="grid">
+ <div class="card"><div class="muted">Aktive Projekte</div><div class="metric">${db.projects.length}</div><div class="muted">Projektbereiche</div></div>
+ <div class="card"><div class="muted">Offene Aufgaben</div><div class="metric">${open}</div><div class="muted">${done} abgeschlossen</div></div>
+ <div class="card"><div class="muted">Wissenseinträge</div><div class="metric">${db.knowledge.length}</div><div class="muted">Im lokalen Brain</div></div>
+ <div class="card wide"><div class="row"><h3>Dein System</h3><span class="pill">V1.0 · lokal</span></div><p class="muted">NEX CORE verwaltet deine Informationen direkt in diesem Browser. Nutze ChatGPT als Denk- und Sprachmodell; dieses Dashboard ist dein Kontrollzentrum.</p><div class="actions"><button class="primary" onclick="setPage('tasks')">Aufgaben öffnen</button><button onclick="setPage('brain')">Wissen hinzufügen</button><button onclick="exportData()">Backup exportieren</button></div></div>
+ <div class="card wide"><h3>Aktuelle Projekte</h3>${db.projects.slice(0,4).map(p=>`<div class="item row"><div><strong>${esc(p.name)}</strong><small>${esc(p.area)}</small></div><span class="pill">${esc(p.status)}</span></div>`).join('')}</div>
+ </div>`);
+ } else if(page==='projects'){
+ app.innerHTML=shell('PROJECT BRAIN','Projekte','Jedes Projekt erhält einen eigenen Kontext, Status und Notizen.',`
+ <div class="card"><h3>Neues Projekt</h3><div class="two"><div class="field"><label>Projektname</label><input id="pname" placeholder="z. B. NEXCAM"></div><div class="field"><label>Bereich</label><input id="parea" placeholder="Technik, Familie, Business …"></div></div><div class="field"><label>Notizen / Kontext</label><textarea id="pnotes" placeholder="Ziel, Anforderungen, bisherige Entscheidungen …"></textarea></div><button class="primary" onclick="addProject()">Projekt hinzufügen</button></div>
+ <div class="grid" style="margin-top:14px">${db.projects.map(p=>`<div class="card"><div class="row"><h3>${esc(p.name)}</h3><span class="pill">${esc(p.status)}</span></div><div class="muted">${esc(p.area)}</div><p>${esc(p.notes)}</p><div class="actions"><button onclick="editProject(${p.id})">Bearbeiten</button><button class="danger" onclick="delProject(${p.id})">Löschen</button></div></div>`).join('')||'<div class="empty wide">Noch keine Projekte.</div>'}</div>`);
+ } else if(page==='tasks'){
+ app.innerHTML=shell('EXECUTION LAYER','Aufgaben','Einfacher Aufgabenmanager mit Priorität und Projektzuordnung.',`
+ <div class="card"><h3>Neue Aufgabe</h3><div class="two"><div class="field"><label>Aufgabe</label><input id="ttitle" placeholder="Was soll erledigt werden?"></div><div class="field"><label>Projekt</label><input id="tproject" placeholder="Projektname"></div></div><div class="field"><label>Priorität</label><select id="tpriority"><option>Hoch</option><option selected>Mittel</option><option>Niedrig</option></select></div><button class="primary" onclick="addTask()">Aufgabe speichern</button></div>
+ <div class="card" style="margin-top:14px"><h3>Aufgabenliste</h3>${db.tasks.map(t=>`<div class="item row"><div><strong style="${t.done?'text-decoration:line-through;opacity:.55':''}">${esc(t.title)}</strong><small>${esc(t.project)} · ${esc(t.priority)}</small></div><div class="actions"><button onclick="toggleTask(${t.id})">${t.done?'Wieder öffnen':'Erledigt'}</button><button class="danger" onclick="delTask(${t.id})">×</button></div></div>`).join('')||'<div class="empty">Keine Aufgaben vorhanden.</div>'}</div>`);
+ } else if(page==='agents'){
+ const agents=[['🧠','Chief of Staff','Ordnet Ziele, Prioritäten und Entscheidungen.','Analysiere meinen aktuellen Kontext. Nenne die 3 wichtigsten Prioritäten, offene Entscheidungen, Risiken und konkrete nächste Schritte.'],['💶','Finance Agent','Budget, Ausgaben, Sparziele und Monatsplanung.','Arbeite als nüchterner Familien-Finanzmanager. Prüfe Einnahmen, Fixkosten, variable Ausgaben, Rücklagen und verbleibendes Budget. Erfinde keine Zahlen.'],['🔎','Research Agent','Vergleicht Optionen anhand verlässlicher Quellen.','Recherchiere die Frage systematisch. Trenne bestätigte Fakten, Unsicherheiten und Empfehlungen. Bevorzuge Primärquellen und nenne Quellen.'],['🛠️','Tech Builder','Plant und erklärt technische Projekte Schritt für Schritt.','Handle als technischer Projektleiter. Prüfe Anforderungen, Kosten, Kompatibilität und Risiken. Gib umsetzbare Schritte für Anfänger.'],['🏠','Home Architect','Renovierung, Raumplanung, Materialien und Einkauf.','Handle als Architekt und Innenraumplaner. Berücksichtige Maße, Familie, Funktion, Budget und vorhandene Bausubstanz. Frage bei sicherheitskritischen Details nach.'],['📈','Creator Agent','YouTube-Ideen, Kanalstrategie und Performance.','Entwickle datenbasierte YouTube-Strategien. Bewerte Zielgruppe, Nachfrage, Wettbewerb, Hook, Titel, Thumbnail und Produktionsaufwand.']];
+ app.innerHTML=shell('SPECIALIST LAYER','Deine KI-Agenten','Agenten sind hier kostenlose Rollen- und Arbeitsanweisungen für ChatGPT. Kopiere einen Auftrag in deinen Chat.',`<div class="grid">${agents.map(a=>`<div class="card agent"><div class="ico">${a[0]}</div><div><h3>${a[1]}</h3><p>${a[2]}</p><button onclick="copyText(${JSON.stringify(a[3])})">Prompt kopieren</button></div></div>`).join('')}</div>`);
+ } else if(page==='brain'){
+ app.innerHTML=shell('CENTRAL MEMORY','Brain / Wissen','Speichere Entscheidungen, Regeln, Projektwissen und wichtige Referenzen lokal.',`
+ <div class="card"><h3>Wissen hinzufügen</h3><div class="field"><label>Titel</label><input id="ktitle" placeholder="z. B. Designentscheidung Wohnzimmer"></div><div class="field"><label>Inhalt</label><textarea id="kbody" placeholder="Was soll dauerhaft im Projektwissen stehen?"></textarea></div><button class="primary" onclick="addKnowledge()">Eintrag speichern</button></div>
+ <div class="card" style="margin-top:14px"><h3>Gespeichertes Wissen</h3>${db.knowledge.map(k=>`<div class="item"><div class="row"><strong>${esc(k.title)}</strong><button class="danger" onclick="delKnowledge(${k.id})">Löschen</button></div><p class="muted">${esc(k.body)}</p></div>`).join('')||'<div class="empty">Noch kein Wissen gespeichert.</div>'}</div>
+ <div class="card" style="margin-top:14px"><h3>Central Brain – Arbeitsprofil</h3><textarea id="profile" placeholder="Deine Arbeitsregeln, Ziele, bevorzugte Sprache und Entscheidungsregeln …">${esc(db.notes)}</textarea><div class="actions"><button class="primary" onclick="saveProfile()">Profil speichern</button><button onclick="copyProfile()">Profil für ChatGPT kopieren</button></div></div>`);
+ } else if(page==='automation'){
+ app.innerHTML=shell('WORKFLOW ENGINE','Automatisierung','Vorerst als kostenlose Checklisten und manuell auslösbare Abläufe. Kein Hintergrunddienst läuft, wenn der Browser geschlossen ist.',`
+ <div class="card"><h3>Workflow-Vorlagen</h3>${db.automations.map(a=>`<div class="item"><div class="row"><strong>${esc(a.name)}</strong><span class="pill">${a.enabled?'Aktiviert':'Pausiert'}</span></div><p class="muted">Auslöser: ${esc(a.trigger)}</p><p>${esc(a.action)}</p><div class="actions"><button onclick="toggleAuto(${a.id})">${a.enabled?'Pausieren':'Aktivieren'}</button><button class="primary" onclick="runAuto(${a.id})">Jetzt ausführen</button></div></div>`).join('')}</div>
+ <div class="card" style="margin-top:14px"><h3>Neuen Workflow</h3><div class="field"><label>Name</label><input id="aname" placeholder="Workflow-Name"></div><div class="field"><label>Auslöser</label><input id="atrigger" placeholder="z. B. Jeden Freitag"></div><div class="field"><label>Aktion / Anweisung</label><textarea id="aaction"></textarea></div><button class="primary" onclick="addAuto()">Workflow speichern</button></div>`);
+ } else if(page==='settings'){
+ app.innerHTML=shell('SYSTEM SETTINGS','Einstellungen','Deine Daten bleiben in diesem Browser, bis du sie exportierst oder den Browser-Speicher löschst.',`
+ <div class="grid"><div class="card"><h3>Datensicherung</h3><p class="muted">Exportiere alle Projekte, Aufgaben, Notizen und Workflows als JSON-Datei.</p><button class="primary" onclick="exportData()">Backup herunterladen</button></div><div class="card"><h3>Backup importieren</h3><p class="muted">Stelle ein zuvor exportiertes NEX CORE Backup wieder her.</p><input type="file" id="importfile" accept="application/json"><div class="actions"><button onclick="importData()">Importieren</button></div></div><div class="card"><h3>Zurücksetzen</h3><p class="muted">Setzt den lokalen Speicher auf die Startdaten zurück.</p><button class="danger" onclick="resetData()">Daten zurücksetzen</button></div><div class="card wide"><h3>Systemgrenzen</h3><p class="muted">Diese V1 ist eine lokale Web-App. Sie hat keinen Zugriff auf E-Mail, Kalender, Telefon, andere Apps oder Konten. ChatGPT-Verbindung erfolgt durch Kopieren von Kontext und Prompts. Für echte Hintergrundautomatisierung braucht es später einen laufenden Rechner/Server und passende Berechtigungen.</p></div></div>`);
+ }
+}
+function addProject(){let n=v('pname');if(!n)return;db.projects.push({id:Date.now(),name:n,area:v('parea'),notes:v('pnotes'),status:'Aktiv'});save();render()}
+function editProject(id){let p=db.projects.find(x=>x.id===id);let n=prompt('Projektname',p.name);if(n===null)return;p.name=n;p.area=prompt('Bereich',p.area)??p.area;p.notes=prompt('Notizen',p.notes)??p.notes;save();render()}
+function delProject(id){if(confirm('Projekt löschen?')){db.projects=db.projects.filter(x=>x.id!==id);save();render()}}
+function addTask(){let n=v('ttitle');if(!n)return;db.tasks.push({id:Date.now(),title:n,project:v('tproject'),priority:v('tpriority'),done:false});save();render()}
+function toggleTask(id){let t=db.tasks.find(x=>x.id===id);t.done=!t.done;save();render()}
+function delTask(id){db.tasks=db.tasks.filter(x=>x.id!==id);save();render()}
+function addKnowledge(){let t=v('ktitle'),b=v('kbody');if(!t||!b)return;db.knowledge.push({id:Date.now(),title:t,body:b});save();render()}
+function delKnowledge(id){db.knowledge=db.knowledge.filter(x=>x.id!==id);save();render()}
+function saveProfile(){db.notes=v('profile');save();alert('Profil gespeichert.')}
+function copyProfile(){copyText('NEX CORE – PERSÖNLICHES ARBEITSPROFIL\\n'+db.notes+'\\n\\nProjekte:\\n'+db.projects.map(p=>p.name+': '+p.notes).join('\\n'))}
+function addAuto(){let n=v('aname');if(!n)return;db.automations.push({id:Date.now(),name:n,trigger:v('atrigger'),action:v('aaction'),enabled:false});save();render()}
+function toggleAuto(id){let a=db.automations.find(x=>x.id===id);a.enabled=!a.enabled;save();render()}
+function runAuto(id){let a=db.automations.find(x=>x.id===id);copyText('NEX CORE WORKFLOW: '+a.name+'\\nAuslöser: '+a.trigger+'\\nAufgabe für ChatGPT:\\n'+a.action);alert('Workflow-Anweisung kopiert. Füge sie in ChatGPT ein, um sie auszuführen.')}
+function v(id){return document.getElementById(id)?.value?.trim()||''}
+async function copyText(s){try{await navigator.clipboard.writeText(s);alert('In Zwischenablage kopiert.')}catch(e){prompt('Text kopieren:',s)}}
+function exportData(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nex-core-backup.json';a.click();URL.revokeObjectURL(a.href)}
+function importData(){let f=document.getElementById('importfile').files[0];if(!f)return alert('Bitte Backup-Datei auswählen.');let r=new FileReader();r.onload=()=>{try{db=JSON.parse(r.result);save();render();alert('Backup importiert.')}catch(e){alert('Datei ist kein gültiges NEX CORE Backup.')}};r.readAsText(f)}
+function resetData(){if(confirm('Wirklich alle lokalen NEX CORE Daten zurücksetzen?')){db=structuredClone(seed);save();render()}}
+render();
+</script>
+</body></html>
